@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const isDev = require("electron-is-dev");
 const path = require("path");
 
@@ -10,7 +10,9 @@ const createWindow = () => {
     height: 640,
     webPreferences: {
       nodeIntegration: true,
-      devTools: isDev
+      contextIsolation: false,
+      devTools: isDev,
+      preload: path.join(__dirname, "preload.js")
     }
   });
 
@@ -29,6 +31,35 @@ const createWindow = () => {
   mainWindow.on("closed", () => (mainWindow = null));
   mainWindow.focus();
 };
+
+ipcMain.on("app_version", event => {
+  event.reply("app_version", { version: app.getVersion() });
+});
+
+ipcMain.on("files", async event => {
+  const result = await dialog
+    .showOpenDialog(null, {
+      filters: [
+        {
+          name: "Images",
+          extensions: ["jpg", "png"]
+        }
+      ],
+      properties: ["openFile", "multiSelections"]
+    })
+    .then(result => {
+      const { canceled, filePaths } = result;
+
+      if (canceled) return [];
+      return filePaths;
+    })
+    .catch(err => {
+      console.log(err);
+      return [];
+    });
+
+  event.reply("files", { files: result });
+});
 
 // electron이 초기화 끝났을 때
 app.on("ready", () => {
