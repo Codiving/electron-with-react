@@ -4,6 +4,10 @@
   "private": true,
   "homepage": "./",
   "main": "public/electron.js",
+  "build": {
+    "appId": "com.exmaple.electron",
+    "productName": "electronReact"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
@@ -20,7 +24,8 @@
     "start:react": "react-scripts start",
     "build:react": "react-scripts build",
     "test:react": "react-scripts test",
-    "eject:react": "react-scripts eject"
+    "eject:react": "react-scripts eject",
+    "build": "yarn build:react && electron-builder"
   },
   "eslintConfig": {
     "extends": [
