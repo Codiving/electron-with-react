@@ -13,6 +13,8 @@
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
     "electron-is-dev": "^2.0.0",
+    "electron-progressbar": "^2.0.1",
+    "electron-updater": "^4.6.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -25,7 +27,8 @@
     "build:react": "react-scripts build",
     "test:react": "react-scripts test",
     "eject:react": "react-scripts eject",
-    "build": "yarn build:react && electron-builder"
+    "build": "yarn build:react && electron-builder",
+    "release": "yarn build:react && set GH_TOKEN={github_token} && electron-builder"
   },
   "eslintConfig": {
     "extends": [
